@@ -26,10 +26,10 @@ func GetMemStats() (*models.MemStats, error) {
 
 	// return stats
 	stats := &models.MemStats{
-		MemTotal:     utils.ByteCountDecimal(memStats.Total),
-		MemAvailable: utils.ByteCountDecimal(memStats.Available),
-		MemUsed:      utils.ByteCountDecimal(memStats.Used),
-		MemFree:      utils.ByteCountDecimal(memStats.Free),
+		MemTotal:     memStats.Total,
+		MemAvailable: memStats.Available,
+		MemUsed:      memStats.Used,
+		MemFree:      memStats.Free,
 	}
 	return stats, nil
 }

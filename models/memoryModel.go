@@ -1,8 +1,8 @@
 package models
 
 type MemStats struct {
-	MemTotal     string `json:"memTotal"`
-	MemAvailable string `json:"memAvailable"`
-	MemUsed      string `json:"memUsed"`
-	MemFree      string `json:"memFree"`
+	MemTotal     uint64 `json:"memTotal"`
+	MemAvailable uint64 `json:"memAvailable"`
+	MemUsed      uint64 `json:"memUsed"`
+	MemFree      uint64 `json:"memFree"`
 }

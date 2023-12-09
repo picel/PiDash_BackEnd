@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"fmt"
 	"os/exec"
+	"strconv"
 	"strings"
 
 	"picel.pidash/models"
@@ -52,7 +52,7 @@ func GetGPUInfo() ([]models.GPUInfo, error) {
 		ProductName:   string(pInfo[0]),
 		DriverVersion: string(pInfo[1]),
 		TotalMemory:   string(pInfo[2]),
-		MaxClocks: models.Clocks{
+		MaxClock: models.Clock{
 			GraphicsClock: string(maxClocks[0]),
 			SmClock:       string(maxClocks[1]),
 			MemClock:      string(maxClocks[2]),
@@ -65,7 +65,7 @@ func GetGPUInfo() ([]models.GPUInfo, error) {
 
 func GetGPUStats() (models.GPUStats, error) {
 	// memoryUsage, power
-	cmd := exec.Command("nvidia-smi", "--query-gpu=memory.used,memory.total,memory.free,memory.reserved,power.draw,power.limit", "--format=csv,noheader")
+	cmd := exec.Command("nvidia-smi", "--query-gpu=memory.used,memory.total,memory.free,memory.reserved,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit", "--format=csv,noheader,nounits")
 	Output, err := cmd.Output()
 	if err != nil {
 		return models.GPUStats{}, err
@@ -73,32 +73,42 @@ func GetGPUStats() (models.GPUStats, error) {
 	// trim \r\n
 	trimmed := strings.Trim(string(Output), "\r\n")
 	results := strings.Split(string(trimmed), ", ")
+	// convert all data of results to int
+	intConverted := make([]int, 7)
+	floatConverted := make([]float64, 2)
+	for i, val := range results {
+		if i == 7 || i == 8 {
+			floatVal, err := strconv.ParseFloat(val, 64)
+			if err != nil {
+				return models.GPUStats{}, err
+			}
+			floatConverted[i-7] = floatVal
+		} else {
+			intVal, err := strconv.Atoi(val)
+			if err != nil {
+				return models.GPUStats{}, err
+			}
+			intConverted[i] = intVal
+		}
+	}
+
 	memoryUsage := models.MemoryUsage{
-		Used:     string(results[0]),
-		Total:    string(results[1]),
-		Free:     string(results[2]),
-		Reserved: string(results[3]),
-	}
-	power := models.Power{
-		Usage: string(results[4]),
-		Limit: string(results[5]),
+		Used:     intConverted[0],
+		Total:    intConverted[1],
+		Free:     intConverted[2],
+		Reserved: intConverted[3],
 	}
 
-	// utilization, temperature
-	cmd = exec.Command("nvidia-smi", "--query-gpu=utilization.gpu,utilization.memory,temperature.gpu", "--format=csv,noheader,nounits")
-	Output, err = cmd.Output()
-	if err != nil {
-		return models.GPUStats{}, err
-	}
-	trimmed = strings.Trim(string(Output), "\r\n")
-	results = strings.Split(string(trimmed), ", ")
 	utilization := models.Utilization{
-		GPU:    string(results[0]),
-		Memory: string(results[1]),
+		GPU:    intConverted[4],
+		Memory: intConverted[5],
 	}
-	temperature := string(results[2])
+	var temperature int = intConverted[6]
 
-	fmt.Println(memoryUsage, utilization, temperature, power)
+	power := models.Power{
+		Usage: floatConverted[0],
+		Limit: floatConverted[1],
+	}
 
 	// get clocks
 	cmd = exec.Command("nvidia-smi", "-q", "-d", "CLOCK")
@@ -128,7 +138,7 @@ func GetGPUStats() (models.GPUStats, error) {
 		Utilization: utilization,
 		Temperature: temperature,
 		Power:       power,
-		Clocks: models.Clocks{
+		Clock: models.Clock{
 			GraphicsClock: clocks[0],
 			SmClock:       clocks[1],
 			MemClock:      clocks[2],

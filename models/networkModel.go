@@ -7,6 +7,6 @@ type NetInfo struct {
 
 type NetStats struct {
 	Interface string `json:"interface"`
-	TxSpeed   string `json:"txSpeed"`
-	RxSpeed   string `json:"rxSpeed"`
+	TxSpeed   uint64 `json:"txSpeed"`
+	RxSpeed   uint64 `json:"rxSpeed"`
 }

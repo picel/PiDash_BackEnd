@@ -1,7 +1,6 @@
 package ws
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -19,7 +18,6 @@ func ServeGPUWs(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		stats, err := services.GetGPUStats()
-		fmt.Println(stats)
 		if err != nil {
 			log.Println(err)
 			return

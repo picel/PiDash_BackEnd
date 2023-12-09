@@ -4,20 +4,20 @@ type GPUInfo struct {
 	ProductName   string `json:"productName"`
 	DriverVersion string `json:"driverVersion"`
 	TotalMemory   string `json:"totalMemory"`
-	MaxClocks     Clocks `json:"maxClocks"`
+	MaxClock      Clock  `json:"maxClock"`
 }
 
 type GPUStats struct {
 	MemoryUsage MemoryUsage `json:"memoryUsage"`
 	Utilization Utilization `json:"utilization"`
-	Temperature string      `json:"temperature"`
+	Temperature int         `json:"temperature"`
 	Power       Power       `json:"power"`
-	Clocks      Clocks      `json:"clocks"`
+	Clock       Clock       `json:"clock"`
 }
 
 /// sub structs
 
-type Clocks struct {
+type Clock struct {
 	GraphicsClock string `json:"graphicsClock"`
 	SmClock       string `json:"smClock"`
 	MemClock      string `json:"memClock"`
@@ -25,18 +25,18 @@ type Clocks struct {
 }
 
 type MemoryUsage struct {
-	Total    string `json:"total"`
-	Reserved string `json:"reserved"`
-	Used     string `json:"used"`
-	Free     string `json:"free"`
+	Total    int `json:"total"`
+	Reserved int `json:"reserved"`
+	Used     int `json:"used"`
+	Free     int `json:"free"`
 }
 
 type Utilization struct {
-	GPU    string `json:"gpu"`
-	Memory string `json:"memory"`
+	GPU    int `json:"gpu"`
+	Memory int `json:"memory"`
 }
 
 type Power struct {
-	Usage string `json:"usage"`
-	Limit string `json:"limit"`
+	Usage float64 `json:"usage"`
+	Limit float64 `json:"limit"`
 }

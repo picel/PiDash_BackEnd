@@ -6,7 +6,6 @@ import (
 	"github.com/shirou/gopsutil/v3/net"
 
 	"picel.pidash/models"
-	"picel.pidash/utils"
 )
 
 func GetNetInfo() ([]models.NetInfo, error) {
@@ -60,8 +59,8 @@ func GetNetStats() (models.NetStats, error) {
 
 	netStat := models.NetStats{
 		Interface: maxDiffName,
-		TxSpeed:   utils.ByteCountDecimal(maxDiffTx),
-		RxSpeed:   utils.ByteCountDecimal(maxDiffRx),
+		TxSpeed:   maxDiffTx,
+		RxSpeed:   maxDiffRx,
 	}
 
 	return netStat, nil
