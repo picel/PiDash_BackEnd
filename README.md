@@ -25,6 +25,14 @@ Pi Dash 프로젝트를 위한 데스크톱 백엔드
     - /mem : 실시간 Memory 정보 (Total, Available, Used, Free) 제공
     - /net : 실시간 Network 정보 (인터페이스 명, Tx/Rx 속도) 제공
 
+## 실행 화면
+![image](https://github.com/picel/PiDash_BackEnd/assets/30901178/89ab3986-589a-4213-87dd-7809c47c0279)
+![image](https://github.com/picel/PiDash_BackEnd/assets/30901178/7105f010-e07a-43db-9f77-8f0f1ab9d061)
+
+프로그램 실행 시 Windows 시스템 트레이 및 Toast 메시지로 IP 주소 정보 제공
+ 
 ## ToDo
 1. CPU Temp 정보 수신
 2. Windows 외 타 OS 지원 추가
+3. GUI Client 추가 (클라이언트 설치 안내 등)
+4. 자체 Flutter Web 호스팅 기능 추가
