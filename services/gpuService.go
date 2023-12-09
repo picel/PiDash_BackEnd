@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
 
 	"picel.pidash/models"
 )
@@ -12,6 +13,7 @@ import (
 func GetGPUInfo() ([]models.GPUInfo, error) {
 	// get product name, driver version, total memory by calling nvidia-smi
 	cmd := exec.Command("nvidia-smi", "--query-gpu=name,driver_version,memory.total", "--format=csv,noheader,nounits")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	Output, err := cmd.Output()
 	if err != nil {
 		return nil, err
@@ -26,6 +28,7 @@ func GetGPUInfo() ([]models.GPUInfo, error) {
 
 	// get MaxClocks
 	cmd = exec.Command("nvidia-smi", "-q", "-d", "CLOCK")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	clockInfo, err := cmd.Output()
 	if err != nil {
 		return nil, err
@@ -66,6 +69,7 @@ func GetGPUInfo() ([]models.GPUInfo, error) {
 func GetGPUStats() (models.GPUStats, error) {
 	// memoryUsage, power
 	cmd := exec.Command("nvidia-smi", "--query-gpu=memory.used,memory.total,memory.free,memory.reserved,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit", "--format=csv,noheader,nounits")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	Output, err := cmd.Output()
 	if err != nil {
 		return models.GPUStats{}, err
@@ -112,6 +116,7 @@ func GetGPUStats() (models.GPUStats, error) {
 
 	// get clocks
 	cmd = exec.Command("nvidia-smi", "-q", "-d", "CLOCK")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	clockInfo, err := cmd.Output()
 	if err != nil {
 		return models.GPUStats{}, err
