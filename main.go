@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -14,8 +15,14 @@ import (
 )
 
 var ipAddrs []string
+var Version string
 
 func main() {
+	if Version == "" {
+		Version = "dev"
+	}
+	fmt.Println("PiDash version " + Version)
+
 	go func() {
 		systray.Run(onReady, nil)
 	}()
@@ -29,7 +36,6 @@ func main() {
 		}
 		toastMessage.Push()
 		log.Fatal("No IP address found")
-		// exit program
 		os.Exit(1)
 	} else {
 		stringBuilder := "Server running on one of the following addresses: "
@@ -64,7 +70,6 @@ func onReady() {
 
 	systray.AddSeparator()
 
-	// make ip addresses
 	for _, ipAddr := range ipAddrs {
 		mIP := systray.AddMenuItem(ipAddr+":8080", "Open PiDash in browser")
 		mIP.Disable()
