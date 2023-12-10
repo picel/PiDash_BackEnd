@@ -32,8 +32,6 @@ jobs:
   create-release:
     needs: build
     runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
     - name: Create Release
       uses: actions/create-release@v1
@@ -44,6 +42,10 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+    
+    - name: Set Upload URL for future steps
+      id: create-release
+      run: echo "::set-output name=upload_url::$(jq -r '.upload_url' $GITHUB_EVENT_PATH)"
   
   upload-assets:
     needs: [build, create-release]
