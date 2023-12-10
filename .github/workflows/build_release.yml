@@ -42,10 +42,9 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-    
-    - name: Set Upload URL for future steps
-      id: create-release
-      run: echo "::set-output name=upload_url::$(jq -r '.upload_url' $GITHUB_EVENT_PATH)"
+    - name: Set Upload URL
+      id: set_upload_url
+      run: echo "upload_url=https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets{?name,label}" >> $GITHUB_ENV
   
   upload-assets:
     needs: [build, create-release]
