@@ -43,6 +43,8 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+    - name: Extract upload url
+      run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> $GITHUB_ENV
   
   upload-assets:
     needs: [build, create-release]
@@ -51,10 +53,6 @@ jobs:
       matrix:
         platform: [ 'amd64', 'arm64' ]
     steps:
-    - name: test env
-      run: echo ${{ needs.create-release.outputs.upload_url }}
-    - name: test env2
-      run: echo ${{ needs.create-release.outputs.create_release.outputs.upload_url}}
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
