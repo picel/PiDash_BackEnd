@@ -9,6 +9,7 @@ import (
 	"github.com/go-toast/toast"
 	"github.com/gorilla/mux"
 	"picel.pidash/api"
+	"picel.pidash/middlewares"
 	"picel.pidash/utils"
 	"picel.pidash/ws"
 )
@@ -49,6 +50,9 @@ func main() {
 	}
 
 	router := mux.NewRouter()
+
+	// add cors headers of mux router
+	router.Use(middlewares.CorsHeader)
 
 	apiRouter := router.PathPrefix("/api").Subrouter()
 	wsRouter := router.PathPrefix("/ws").Subrouter()
