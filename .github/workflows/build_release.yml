@@ -29,6 +29,9 @@ jobs:
       run: |
         env GOOS=windows GOARCH=${{ matrix.platform }} go build -ldflags "-H=windowsgui -X main.Version=${{ env.VERSION }}" -o pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
     
+    outputs:
+      VERSION: ${{ env.VERSION }}
+    
   create-release:
     needs: build
     runs-on: ubuntu-latest
@@ -43,8 +46,8 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-    - name: Extract upload url
-      run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> $GITHUB_ENV
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
   
   upload-assets:
     needs: [build, create-release]
