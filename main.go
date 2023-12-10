@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -21,7 +20,6 @@ func main() {
 	if Version == "" {
 		Version = "dev"
 	}
-	fmt.Println("PiDash version " + Version)
 
 	go func() {
 		systray.Run(onReady, nil)
@@ -65,7 +63,7 @@ func onReady() {
 	systray.SetTitle("PiDash")
 	systray.SetTooltip("PiDash")
 
-	mRunning := systray.AddMenuItem("PiDash Server Running", "")
+	mRunning := systray.AddMenuItem("PiDash Server "+Version, "")
 	mRunning.Disable()
 
 	systray.AddSeparator()
