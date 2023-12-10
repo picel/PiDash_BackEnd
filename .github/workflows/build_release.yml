@@ -27,7 +27,7 @@ jobs:
 
     - name: Build
       run: |
-        env GOOS=windows GOARCH=${{ matrix.platform }} go build -ldflags "-H=windowsgui -X main.Version=$VERSION" -o pidash-${{ matrix.platform }}-$VERSION.exe
+        env GOOS=windows GOARCH=${{ matrix.platform }} go build -ldflags "-H=windowsgui -X main.Version=${{ env.VERSION }}" -o pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
 
         
     - name: Create Release
@@ -47,6 +47,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./pidash-${{ matrix.platform }}-$VERSION.exe
-        asset_name: pidash-${{ matrix.platform }}-$VERSION.exe
+        asset_path: ./pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
+        asset_name: pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
         asset_content_type: application/octet-stream
