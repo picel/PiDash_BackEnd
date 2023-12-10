@@ -28,6 +28,12 @@ jobs:
     - name: Build
       run: |
         env GOOS=windows GOARCH=${{ matrix.platform }} go build -ldflags "-H=windowsgui -X main.Version=${{ env.VERSION }}" -o pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
+        path: pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
     
     outputs:
       VERSION: ${{ env.VERSION }}
@@ -46,6 +52,7 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
   
@@ -56,6 +63,11 @@ jobs:
       matrix:
         platform: [ 'amd64', 'arm64' ]
     steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: pidash-${{ matrix.platform }}-${{ needs.build.outputs.VERSION }}.exe
+
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
