@@ -7,11 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         go-version: [ '1.21.5' ]
-        platform: [ 'amd64', 'arm64']
+        platform: [ 'amd64', 'arm64' ]
 
     steps:
     - name: Check out code
@@ -28,10 +28,12 @@ jobs:
     - name: Build
       run: |
         env GOOS=windows GOARCH=${{ matrix.platform }} go build -ldflags "-H=windowsgui -X main.Version=${{ env.VERSION }}" -o pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
-
-        
+    
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     - name: Create Release
-      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,13 +42,20 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-      
+  
+  upload-assets:
+    needs: [build, create-release]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ 'amd64', 'arm64' ]
+    steps:
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
-        asset_name: pidash-${{ matrix.platform }}-${{ env.VERSION }}.exe
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: ./pidash-${{ matrix.platform }}-${{ needs.build.outputs.VERSION }}.exe
+        asset_name: pidash-${{ matrix.platform }}-${{ needs.build.outputs.VERSION }}.exe
         asset_content_type: application/octet-stream
