@@ -32,6 +32,8 @@ jobs:
   create-release:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
     - name: Create Release
       uses: actions/create-release@v1
