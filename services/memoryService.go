@@ -4,17 +4,18 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 
 	"picel.pidash/models"
-	"picel.pidash/utils"
 )
 
-func GetMemInfo() (string, error) {
+func GetMemInfo() (*models.MemInfo, error) {
 	memInfo, err := mem.VirtualMemory()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	// return total
-	total := utils.ByteCountDecimal(memInfo.Total)
+	// return total as JSON string
+	total := &models.MemInfo{
+		Total: memInfo.Total,
+	}
 	return total, nil
 }
 
