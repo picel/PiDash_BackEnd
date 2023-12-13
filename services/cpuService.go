@@ -37,16 +37,19 @@ func GetCPUInfo() ([]models.CPUInfo, error) {
 	return cpuInfo, nil
 }
 
-func GetCPUStats() ([]float64, error) {
+func GetCPUStats() (*models.CPUStats, error) {
 	cpuLoad, err := cpu.Percent(time.Second, true)
 	if err != nil {
 		return nil, err
 	}
 
-	// cpu 로드를 소수점 2자리까지만 표시
 	for i, load := range cpuLoad {
 		cpuLoad[i], _ = strconv.ParseFloat(strconv.FormatFloat(load, 'f', 2, 64), 64)
 	}
 
-	return cpuLoad, nil
+	cpuStats := &models.CPUStats{
+		Loads: cpuLoad,
+	}
+
+	return cpuStats, nil
 }

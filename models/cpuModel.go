@@ -15,3 +15,7 @@ type CPUInfo struct {
 	Flags      []string `json:"flags"`
 	Microcode  string   `json:"microcode"`
 }
+
+type CPUStats struct {
+	Loads []float64 `json:"loads"`
+}
