@@ -25,15 +25,15 @@ func GetNetInfo() ([]models.NetInfo, error) {
 	return netInfoList, nil
 }
 
-func GetNetStats() (models.NetStats, error) {
+func GetNetStats() (*models.NetStats, error) {
 	stats1, err := net.IOCounters(true)
 	if err != nil {
-		return models.NetStats{}, err
+		return nil, err
 	}
 	time.Sleep(time.Second * 1)
 	stats2, err := net.IOCounters(true)
 	if err != nil {
-		return models.NetStats{}, err
+		return nil, err
 	}
 
 	// find the biggest difference between stats1 and stats2
@@ -57,7 +57,7 @@ func GetNetStats() (models.NetStats, error) {
 		}
 	}
 
-	netStat := models.NetStats{
+	netStat := &models.NetStats{
 		Interface: maxDiffName,
 		TxSpeed:   maxDiffTx,
 		RxSpeed:   maxDiffRx,
