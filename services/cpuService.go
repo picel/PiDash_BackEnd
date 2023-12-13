@@ -21,16 +21,12 @@ func GetCPUInfo() ([]models.CPUInfo, error) {
 			CPU:        strconv.Itoa(int(c.CPU)),
 			VendorID:   c.VendorID,
 			Family:     c.Family,
-			Model:      c.Model,
 			Stepping:   strconv.Itoa(int(c.Stepping)),
 			PhysicalId: c.PhysicalID,
-			CoreId:     c.CoreID,
 			Cores:      strconv.Itoa(int(c.Cores)),
 			ModelName:  c.ModelName,
 			Mhz:        strconv.FormatFloat(c.Mhz, 'f', 2, 64),
 			CacheSize:  strconv.FormatUint(uint64(c.CacheSize), 10),
-			Flags:      c.Flags,
-			Microcode:  c.Microcode,
 		}
 	}
 
