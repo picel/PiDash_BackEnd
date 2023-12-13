@@ -17,5 +17,6 @@ type CPUInfo struct {
 }
 
 type CPUStats struct {
-	Loads []float64 `json:"loads"`
+	CPUCount int       `json:"cpuCount"`
+	Loads    []float64 `json:"loads"`
 }

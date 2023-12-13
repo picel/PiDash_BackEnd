@@ -48,7 +48,8 @@ func GetCPUStats() (*models.CPUStats, error) {
 	}
 
 	cpuStats := &models.CPUStats{
-		Loads: cpuLoad,
+		CPUCount: len(cpuLoad),
+		Loads:    cpuLoad,
 	}
 
 	return cpuStats, nil
