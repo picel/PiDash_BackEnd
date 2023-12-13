@@ -1,10 +1,10 @@
 package models
 
 type GPUInfo struct {
-	ProductName   string `json:"productName"`
-	DriverVersion string `json:"driverVersion"`
-	TotalMemory   string `json:"totalMemory"`
-	MaxClock      Clock  `json:"maxClock"`
+	ProductName   string  `json:"productName"`
+	DriverVersion string  `json:"driverVersion"`
+	TotalMemory   float64 `json:"totalMemory"`
+	MaxClock      Clock   `json:"maxClock"`
 }
 
 type GPUStats struct {

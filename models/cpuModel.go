@@ -1,15 +1,15 @@
 package models
 
 type CPUInfo struct {
-	CPU        string `json:"cpu"`
-	VendorID   string `json:"vendorId"`
-	Family     string `json:"family"`
-	Stepping   string `json:"stepping"`
-	PhysicalId string `json:"physicalId"`
-	Cores      string `json:"cores"`
-	ModelName  string `json:"modelName"`
-	Mhz        string `json:"mhz"`
-	CacheSize  string `json:"cacheSize"`
+	CPU        int     `json:"cpu"`
+	VendorID   string  `json:"vendorId"`
+	Family     string  `json:"family"`
+	Stepping   int32   `json:"stepping"`
+	PhysicalId string  `json:"physicalId"`
+	Cores      int32   `json:"cores"`
+	ModelName  string  `json:"modelName"`
+	Clock      float64 `json:"clock"`
+	CacheSize  int32   `json:"cacheSize"`
 }
 
 type CPUStats struct {

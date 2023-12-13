@@ -18,15 +18,15 @@ func GetCPUInfo() ([]models.CPUInfo, error) {
 	cpuInfo := make([]models.CPUInfo, len(cpu))
 	for i, c := range cpu {
 		cpuInfo[i] = models.CPUInfo{
-			CPU:        strconv.Itoa(int(c.CPU)),
+			CPU:        i,
 			VendorID:   c.VendorID,
 			Family:     c.Family,
-			Stepping:   strconv.Itoa(int(c.Stepping)),
+			Stepping:   c.Stepping,
 			PhysicalId: c.PhysicalID,
-			Cores:      strconv.Itoa(int(c.Cores)),
+			Cores:      c.Cores,
 			ModelName:  c.ModelName,
-			Mhz:        strconv.FormatFloat(c.Mhz, 'f', 2, 64),
-			CacheSize:  strconv.FormatUint(uint64(c.CacheSize), 10),
+			Clock:      c.Mhz,
+			CacheSize:  c.CacheSize,
 		}
 	}
 

@@ -51,10 +51,15 @@ func GetGPUInfo() ([]models.GPUInfo, error) {
 	}
 
 	// parse pInfo
+	totalMemory, err := strconv.ParseFloat(pInfo[2], 64)
+	if err != nil {
+		return nil, err
+	}
+
 	gpuInfo := models.GPUInfo{
 		ProductName:   string(pInfo[0]),
 		DriverVersion: string(pInfo[1]),
-		TotalMemory:   string(pInfo[2]),
+		TotalMemory:   totalMemory,
 		MaxClock: models.Clock{
 			GraphicsClock: string(maxClocks[0]),
 			SmClock:       string(maxClocks[1]),
